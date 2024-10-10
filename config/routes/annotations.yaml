@@ -1,5 +1,5 @@
 controllers:
-    resource: ../../src/Application/Controller/
+    resource: ../../src/Infrastructure/Tweet/Http/
     type: annotation
 
 kernel:
