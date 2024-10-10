@@ -2,7 +2,8 @@
 
 namespace App\Infrastructure;
 
-use App\Domain\Tweet;
+use App\Domain\Tweet\Tweet;
+use App\Domain\Tweet\TweetRepository;
 
 final class TweetRepositoryInMemory implements TweetRepository
 {
@@ -59,7 +60,6 @@ final class TweetRepositoryInMemory implements TweetRepository
         "I'm grateful for the amazing experiences that life has to offer us.",
         "Taking time to disconnect and recharge is essential for our well-being.",
     ];
-
 
     /**
      * @param string $username

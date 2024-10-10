@@ -22,3 +22,39 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+
+    League\Tactician\CommandBus:
+        arguments:
+            -
+                - '@tactician.middleware.command_handler'
+
+    tactician.middleware.command_handler:
+        class: League\Tactician\Handler\CommandHandlerMiddleware
+        arguments:
+            - '@tactician.handler.command_name_extractor.class_name'
+            - '@tactician.handler.locator.symfony'
+            - '@tactician.handler.method_name_inflector.handle'
+
+    tactician.handler.command_name_extractor.class_name:
+        class: League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor
+
+    tactician.handler.locator.symfony:
+        class: League\Tactician\Handler\Locator\InMemoryLocator
+        calls:
+            - method: addHandler
+              arguments:
+                  - '@App\Application\GetTweet\Query\GetTweetQueryHandler'
+                  - 'App\Application\GetTweet\Query\GetTweetQuery'
+
+    tactician.handler.method_name_inflector.handle:
+        class: League\Tactician\Handler\MethodNameInflector\HandleInflector
+
+    League\Tactician\Handler\MethodNameInflector\MethodNameInflector: '@tactician.handler.method_name_inflector.handle'
+
+    App\Domain\Tweet\Service\TweetService:
+        arguments:
+            $tweetRepository: '@App\Infrastructure\TweetRepositoryInMemory'
+
+    App\Infrastructure\Query\QueryBusInterface:
+        class: App\Infrastructure\Query\TacticianQueryBus
